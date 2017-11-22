@@ -10,64 +10,64 @@ package trabalholabiii_2017.pkg3;
  * @author Gabriel
  */
 public class Comanda {
-    private String numPedido;
-    private Cardapio codProduto;
-    private int quatidade;
-    private float vlrUnitario;
-    private float vlrTotal;
+    private String idPedido;
+    private Cardapio codCardapio;
+    private int qnt;
+    private float preco;
+    private float precoTotal;
 
     public Comanda() {
     }
 
-    public Comanda(Cardapio codProduto, int quatidade, float vlrUnitario, float vlrTotal) {
-        this.codProduto = codProduto;
-        this.quatidade = quatidade;
-        this.vlrUnitario = vlrUnitario;
-        this.vlrTotal = vlrTotal;
+    public Comanda(Cardapio codProduto, int quatidade, float preco, float precoTotal) {
+        this.codCardapio = codProduto;
+        this.qnt = quatidade;
+        this.preco = preco;
+        this.precoTotal = precoTotal;
     }
 
-    public Cardapio getCodProduto() {
-        return codProduto;
+    public Cardapio getCodCardapio() {
+        return codCardapio;
     }
 
-    public void setCodProduto(Cardapio codProduto) {
-        this.codProduto = codProduto;
+    public void setCodCardapio(Cardapio codCardapio) {
+        this.codCardapio = codCardapio;
     }
 
-    public int getQuatidade() {
-        return quatidade;
+    public int getQnt() {
+        return qnt;
     }
 
-    public void setQuatidade(int quatidade) {
-        this.quatidade = quatidade;
+    public void setQnt(int qnt) {
+        this.qnt = qnt;
     }
 
-    public float getVlrUnitario() {
-        return vlrUnitario;
+    public float getPreco() {
+        return preco;
     }
 
-    public void setVlrUnitario(float vlrUnitario) {
-        this.vlrUnitario = vlrUnitario;
+    public void setPreco(float preco) {
+        this.preco = preco;
     }
 
-    public float getVlrTotal() {
-        return vlrTotal;
+    public float getPrecoTotal() {
+        return precoTotal;
     }
 
-    public void setVlrTotal(float vlrTotal) {
-        this.vlrTotal = vlrTotal;
+    public void setPrecoTotal(float precoTotal) {
+        this.precoTotal = precoTotal;
     }    
 
-    public String getNumPedido() {
-        return numPedido;
+    public String getIdPedido() {
+        return idPedido;
     }
 
-    public void setNumPedido(String numPedido) {
-        this.numPedido = numPedido;
+    public void setIdPedido(String idPedido) {
+        this.idPedido = idPedido;
     }
     
     @Override
     public String toString() {
-        return  codProduto.getDescricao() + " | " + quatidade + " * " + vlrUnitario + " = " + vlrTotal;
+        return  codCardapio.getNome() + " ------- " + qnt + " X " + preco + " = " + precoTotal;
     }
 }

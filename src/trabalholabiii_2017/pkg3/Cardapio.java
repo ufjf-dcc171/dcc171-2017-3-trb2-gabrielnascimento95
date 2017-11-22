@@ -10,45 +10,45 @@ package trabalholabiii_2017.pkg3;
  * @author Gabriel
  */
 public class Cardapio {
-    private Integer codigo;
-    private String descricao;
-    private float vlrUunitario;
+    private Integer id;
+    private String nome;
+    private float preco;
 
     public Cardapio() {
     }
 
-    public Cardapio(int codigo, String descricao, float vlrUunitario) {
-        this.codigo = codigo;
-        this.descricao = descricao;
-        this.vlrUunitario = vlrUunitario;
+    public Cardapio(int codigo, String nome, float preco) {
+        this.id = codigo;
+        this.nome = nome;
+        this.preco = preco;
     }
 
     public int getCodigo() {
-        return codigo;
+        return id;
     }
 
     public void setCodigo(int codigo) {
-        this.codigo = codigo;
+        this.id = codigo;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getNome() {
+        return nome;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public float getVlrUunitario() {
-        return vlrUunitario;
+    public float getPreco() {
+        return preco;
     }
 
-    public void setVlrUunitario(float vlrUunitario) {
-        this.vlrUunitario = vlrUunitario;
+    public void setPreco(float preco) {
+        this.preco = preco;
     }
 
     @Override
     public String toString() {
-        return  codigo + " - " + descricao + " - " + vlrUunitario;
+        return  id + ". " + nome + " R$ " + preco;
     }
 }

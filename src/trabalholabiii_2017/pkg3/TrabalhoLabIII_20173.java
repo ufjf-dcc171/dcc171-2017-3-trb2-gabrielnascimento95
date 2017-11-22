@@ -28,7 +28,7 @@ public class TrabalhoLabIII_20173 {
         
         try {
             JanelaTrabalho janela = new JanelaTrabalho(leComanda(leCardapio()), leCardapio(), lePedido(leMesas(), leComanda(leCardapio())), leMesas());
-            janela.setSize(800, 650);
+            janela.setSize(680, 650);
             janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             janela.setLocationRelativeTo(null);
             janela.setVisible(true);
@@ -64,7 +64,7 @@ public class TrabalhoLabIII_20173 {
                 }                
             }         
             Comanda aux = new Comanda(produtoPedido, qnt, preco, precoF);
-            aux.setNumPedido(numPedido);
+            aux.setIdPedido(numPedido);
             lstComanda.add(aux);
             linha = lerArq.readLine(); 
         }
@@ -118,7 +118,7 @@ public class TrabalhoLabIII_20173 {
             lstPedido.add(pedido);
             
             for(int j = 0; j < comanda.size(); j++ ){
-                if (comanda.get(j).getNumPedido().equals(id)){
+                if (comanda.get(j).getIdPedido().equals(id)){
                     pedido.getComanda().add(comanda.get(j));
                 }
             }

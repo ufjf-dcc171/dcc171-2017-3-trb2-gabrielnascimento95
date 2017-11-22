@@ -11,6 +11,8 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,7 +63,7 @@ public class JanelaTrabalho extends JFrame{
     private final JTextField txtIdItem = new JTextField();
     private final JTextField txtItem = new JTextField();
     private final JLabel lblItem = new JLabel("Item");    
-    private final JTextField txxPreco = new JTextField();
+    private final JTextField txtPreco = new JTextField();
     private final JLabel lblPreco = new JLabel("Preço");    
     private final JTextField txtQnt = new JTextField();
     private final JLabel lblQnt = new JLabel("Quantidade");    
@@ -77,10 +79,10 @@ public class JanelaTrabalho extends JFrame{
     private final JList<Comanda> jltComanda = new JList<Comanda>(new DefaultListModel<>());
     private final JList<Balanco> jltHistorico = new JList<Balanco>(new DefaultListModel<>());
     
-    private boolean achouMesa = false;
-    private boolean vNovoPedido = false;
-    private boolean vNovoProduto = false;
-    private Date dataAtaual;
+    private boolean retornaMesa = false;
+    private boolean verificaNovoPedido = false;
+    private boolean verificaNovoItem = false;
+    private Date data;
 
     public JanelaTrabalho(ArrayList<Comanda> leComanda, ArrayList<Cardapio> leCardapio, ArrayList<Pedido> lePedido, ArrayList<Mesa> leMesa) throws HeadlessException, IOException{
         
@@ -89,13 +91,12 @@ public class JanelaTrabalho extends JFrame{
         this.lstPedido = lePedido;
         this.lstComanda = leComanda;
         
-        
         setLayout(new BorderLayout());
         pd.setLayout(new BorderLayout());
         pe.setLayout(new GridLayout(1, 3));
         pp.setLayout(new BorderLayout());
         pb.setLayout(new GridLayout(1, 2));
-        pc.setLayout(new GridLayout(10, 1));
+        pc.setLayout(new GridLayout(10, 2));
         pb.setLayout(new GridLayout(1, 1));
         pdb.setLayout(new BorderLayout());
         
@@ -119,7 +120,7 @@ public class JanelaTrabalho extends JFrame{
        pc.add(lblItem);
        pc.add(txtItem);
        pc.add(lblPreco);
-       pc.add(txxPreco);
+       pc.add(txtPreco);
        pc.add(lblQnt);
        pc.add(txtQnt);
        pc.add(lblTotal);
@@ -155,6 +156,78 @@ public class JanelaTrabalho extends JFrame{
        btnAlteraPedido.addActionListener(new acaoBotao());
        btnExcluirPedido.addActionListener(new acaoBotao());
        btnFecharMesa.addActionListener(new acaoBotao());
+       
+       jltPedidos.addMouseListener(new MouseAdapter() {
+           @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 1){
+                    Pedido pedidoAberto = jltPedidos.getSelectedValue();                    
+                    if(pedidoAberto.getComanda() != null){
+                        jltComanda.setModel(new ComandaListModel(pedidoAberto.getComanda()));
+                    }            
+                    cbListaMesa.setEnabled(false); 
+                    jltPedidos.setEnabled(false);
+                    btnFecharMesa.setEnabled(true);
+                    btnSalvarPedido.setEnabled(true);
+                    btnFecharMesa.setEnabled(true);
+                    txtTotalComanda.setText("R$ " + calculadora());
+                }
+             } 
+           
+       
+       });
+       
+       jltCardapio.addMouseListener(new MouseAdapter() {
+           @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 1){
+                    txtIdItem.setText("");
+                    txtItem.setText("");
+                    txtTotal.setText("");
+                    txtQnt.setText("");
+                    txtQnt.grabFocus();
+                    Cardapio itemSelecionado = jltCardapio.getSelectedValue();                    
+                    txtIdItem.setText(itemSelecionado.getCodigo() + ""); 
+                    txtItem.setText(itemSelecionado.getNome()); 
+                    txtTotal.setText(itemSelecionado.getPreco()+ ""); 
+                    verificaNovoItem = true;
+                }
+             }
+       
+       
+       });
+       
+       txtQnt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ((!txtTotal.getText().isEmpty()) && (!txtQnt.getText().isEmpty())) {
+                    txtTotal.setText(Float.parseFloat(txtTotal.getText()) * Float.parseFloat(txtQnt.getText()) + "");
+                }
+            }
+        });
+       
+        txtItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int id = 0;
+                if (!txtItem.getText().isEmpty()){
+                    id = Integer.parseInt(txtItem.getText());
+                    for (int i = 0; i < lstCardapio.size(); i++){
+                        if (id == lstCardapio.get(i).getCodigo()) {
+                            txtIdItem.setText(id + ""); 
+                            txtItem.setText(lstCardapio.get(i).getNome()); 
+                            txtPreco.setText(lstCardapio.get(i).getPreco() + ""); 
+                            //txtQnt.setText("");
+                            //txtTotal.setText("");
+                            txtQnt.grabFocus();
+                            jltCardapio.setSelectedIndex(i); 
+                            verificaNovoItem = true;
+                        }
+                    }
+                }                
+            }
+        });
+
     
     }
 
@@ -169,7 +242,14 @@ public class JanelaTrabalho extends JFrame{
         }
     }
    
-    
+    private float calculadora(){
+        float total = 0;
+        Pedido pedido = jltPedidos.getSelectedValue();                
+        for(int i = 0; i < pedido.getComanda().size(); i++){
+            total = total + pedido.getComanda().get(i).getPrecoTotal();
+        }
+        return total;
+    }
     
     
 
