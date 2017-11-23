@@ -6,7 +6,6 @@
 package trabalholabiii_2017.pkg3;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -31,13 +30,9 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import static trabalholabiii_2017.pkg3.TrabalhoLabIII_20173.lePedido;
+
 
 /**
  *
@@ -49,6 +44,7 @@ public class JanelaTrabalho extends JFrame{
     private ArrayList<Mesa> lstMesa; 
     private ArrayList<Pedido> lstPedido;
     private ArrayList<Comanda> lstComanda;
+    private ArrayList<Comanda> lstHistorico;
     
     private final JPanel pd = new JPanel();
     private final JPanel pe = new JPanel();
@@ -333,7 +329,32 @@ public class JanelaTrabalho extends JFrame{
                     limpaCampos();      
                 }           
             }else if(e.getSource() == btnFecharMesa){
-                
+                if(!jltPedidos.isSelectionEmpty()){
+                    limpaCampos();
+                    Pedido aux = jltPedidos.getSelectedValue();
+                    int index = jltPedidos.getSelectedIndex();
+                    if(lstHistorico.size()>0){
+                        lstHistorico.remove(lstHistorico.get(0));
+                    }
+                    while(aux.getComanda().size() > 0){
+                        lstHistorico.add(aux.getComanda().get(0));
+                        aux.getComanda().remove(aux.getComanda().get(0));
+                    }
+                    JOptionPane.showMessageDialog(null, "Mesa Fechada \n Total: " + aux.getTotal());
+                    lstPedido.remove(aux);
+                    jltPedidos.updateUI();
+                    jltPedidos.setEnabled(true);
+                    cbListaMesa.setEnabled(true);
+                    btnSalvarPedido.setEnabled(false);
+                    atualizaListaMesa();
+                    jltComanda.setModel(new DefaultListModel());
+                    try {
+                        gravacaoArqComanda(lstPedido);
+                        gravacaoArqPedido(lstPedido);
+                    } catch (IOException ex) {
+                        Logger.getLogger(JanelaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             } 
         }
         
