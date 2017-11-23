@@ -11,22 +11,22 @@ package trabalholabiii_2017.pkg3;
  */
 public class Mesa {
     private Integer id;
-    private String descricao;
+    private String nomeMesa;
 
     public Mesa(Integer id, String descricao) {
         this.id = id;
-        this.descricao = descricao;
+        this.nomeMesa = descricao;
     }
 
     public Mesa() {
     }
     
-    public String getDescricao() {
-        return descricao;
+    public String getNomeMesa() {
+        return nomeMesa;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNomeMesa(String nomeMesa) {
+        this.nomeMesa = nomeMesa;
     }
     
     public Integer getId() {
@@ -39,6 +39,6 @@ public class Mesa {
     
     @Override
     public String toString(){
-       return id + "  " + descricao; 
+       return id + "  " + nomeMesa; 
     }
 }

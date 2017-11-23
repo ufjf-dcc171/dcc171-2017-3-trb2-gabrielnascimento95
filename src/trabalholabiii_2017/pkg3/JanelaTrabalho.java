@@ -31,6 +31,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import static trabalholabiii_2017.pkg3.TrabalhoLabIII_20173.lePedido;
 
 /**
  *
@@ -115,6 +116,8 @@ public class JanelaTrabalho extends JFrame{
        btnFecharMesa.setEnabled(false);
        btnSalvarPedido.setEnabled(false); 
        txtTotalComanda.setEditable(false);
+       
+       
        pc.add(cbListaMesa);
        btnFecharMesa.setEnabled(false);    
        pc.add(lblItem);
@@ -231,14 +234,54 @@ public class JanelaTrabalho extends JFrame{
     
     }
 
-    private static class acaoBotao implements ActionListener {
+    private class acaoBotao implements ActionListener {
 
         public acaoBotao() {
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            float auxPreco = 0;
+            float auxTotalMesa = 0;
+            
+            if(e.getSource() == btnNovoPedido){
+                cbListaMesa.setEnabled(true);
+                btnNovoPedido.setEnabled(true);
+                btnSalvarPedido.setEnabled(true);
+                verificaNovoPedido = true;
+                txtItem.grabFocus();
+                Pedido pedido = new Pedido();
+                pedido.setData(txtData + "");
+                pedido.setNumero(String.valueOf(verificaUltimoPedido()));
+                pedido.setTotal(0);
+                pedido.setIdMesa(procuraMesa());
+                lstPedido.add(pedido);
+                jltPedidos.updateUI();
+                jltPedidos.setSelectedIndex(verificaUltimoPedido());
+            }else if(e.getSource() == btnSalvarPedido){
+                
+            }
+            
+        }
+        
+        private int verificaUltimoPedido() {
+            int aux =0;
+            String id = "";
+            for(int i = 0; i < lstPedido.size(); i++){
+                id = lstPedido.get(i).getNumero();
+            }
+            aux = Integer.parseInt(id) + 1;
+            return aux;
+        }
+        
+        private Mesa procuraMesa(){
+             Mesa auxMesa = new Mesa();
+             for(int i=0; i < lstMesa.size(); i++){
+                 if(lstMesa.get(i).getNomeMesa() == cbListaMesa.getSelectedItem().toString()){
+                     auxMesa = lstMesa.get(i);
+                 }
+             }
+             return auxMesa;
         }
     }
    

@@ -7,6 +7,7 @@ package trabalholabiii_2017.pkg3;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTextField;
 
 /**
  *
@@ -32,7 +33,7 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return  idMesa.getDescricao() + " - " + total;
+        return  idMesa.getNomeMesa() + " - " + total;
     }   
 
     public String getNumero() {
@@ -83,7 +84,9 @@ public class Pedido {
         }        
     }
 
-    void setTotal(float vlrTotal) {
-        this.total= vlrTotal;
+    void setTotal(float total) {
+        this.total= total;
     }
+
+   
 }
