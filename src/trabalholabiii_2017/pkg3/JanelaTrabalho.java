@@ -13,9 +13,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -241,7 +247,6 @@ public class JanelaTrabalho extends JFrame{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            float auxPreco = 0;
             float auxTotalMesa = 0;
             
             if(e.getSource() == btnNovoPedido){
@@ -259,9 +264,85 @@ public class JanelaTrabalho extends JFrame{
                 jltPedidos.updateUI();
                 jltPedidos.setSelectedIndex(verificaUltimoPedido());
             }else if(e.getSource() == btnSalvarPedido){
-                
-            }
+                try {
+                    btnNovoPedido.setEnabled(true);
+                    jltPedidos.setEnabled(true);
+                    Pedido aux  = jltPedidos.getSelectedValue();
+                    aux.setTotal(retornaPreco(aux));
+                    if(verificaNovoPedido){
+                        atualizaListaMesa();
+                    }
+                    jltPedidos.updateUI();
+                    jltPedidos.clearSelection();
+                    btnSalvarPedido.setEnabled(true);
+                    verificaNovoPedido = false;
+                    gravacaoArqPedido(lstPedido);
+                    gravacaoArqComanda(lstPedido);
+                } catch (IOException ex) {
+                    Logger.getLogger(JanelaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else if(e.getSource() == btnCancelar){
+                if(verificaNovoPedido == true){
+                    Pedido pedido = jltPedidos.getSelectedValue();
+                    jltComanda.setModel(new DefaultListModel());
+                    lstPedido.remove(pedido);
+                    jltPedidos.updateUI();
+                    jltPedidos.setEnabled(verificaNovoPedido);
+                    btnSalvarPedido.setEnabled(false);
+                    cbListaMesa.setEnabled(true);
+                }
+                limpaCampos();
+                btnNovoPedido.setEnabled(true);
+                jltPedidos.setEnabled(true);
+                jltComanda.setModel(new DefaultListModel());
+                verificaNovoPedido = false;
+                btnFecharMesa.setEnabled(false);
+            }else if(e.getSource() == btnAlteraPedido){
+               Pedido pedido = jltPedidos.getSelectedValue();
+               float vTotal = 0;
+                    if (verificaNovoPedido == false){
+                        Comanda comanda = jltComanda.getSelectedValue();
+                        comanda.setIdPedido(comanda.getIdPedido());
+                        comanda.setQnt(Integer.parseInt(txtQnt.getText()));
+                        comanda.setPreco(Float.parseFloat(txtPreco.getText()));
+                        comanda.setPrecoTotal(Float.parseFloat(txtQnt.getText()) * (Float.parseFloat(txtPreco.getText())));
+                    }else{                        
+                        vTotal = Float.parseFloat(txtQnt.getText()) * (Float.parseFloat(txtPreco.getText()));
+                        Comanda comanda = new Comanda(jltCardapio.getSelectedValue(), Integer.parseInt(txtQnt.getText()), Float.parseFloat(txtPreco.getText()), vTotal);
+                        comanda.setIdPedido(comanda.getIdPedido());
+                        if (verificaNovoPedido == true){                            
+                            lstComanda.add(comanda);
+                            pedido.setComanda(lstComanda);
+                        }else{
+                            pedido.getComanda().add(comanda);
+                        }
+                    }
+                    txtTotalComanda.setText("R$ " + calculadora());
+                    txtTotal.setText("R$ 0,00");
+                    jltComanda.setModel(new ComandaListModel(pedido.getComanda()));
+                    jltComanda.updateUI();
+                    jltComanda.setEnabled(true);
+                    limpaCampos(); 
             
+            }else if(e.getSource() == btnExcluirPedido){
+                 if (!jltComanda.isEnabled() == false){ 
+                    Pedido pedido = jltPedidos.getSelectedValue();
+                    pedido.getComanda().remove(jltComanda.getSelectedValue());
+                    jltComanda.updateUI();                   
+                    txtTotalComanda.setText("R$ " + calculadora());
+                    limpaCampos();      
+                }           
+            }else if(e.getSource() == btnFecharMesa){
+                
+            } 
+        }
+        
+        private float retornaPreco(Pedido aux){
+            float auxPreco = 0;
+            for(int i = 0; i < aux.getComanda().size(); i++){
+                auxPreco = auxPreco + aux.getComanda().get(i).getPreco();
+            }
+            return auxPreco;
         }
         
         private int verificaUltimoPedido() {
@@ -294,6 +375,59 @@ public class JanelaTrabalho extends JFrame{
         return total;
     }
     
+    private void atualizaListaMesa(){
+        cbListaMesa.removeAllItems();
+        for(int i = 0; i < lstMesa.size(); i++){
+            for(int j = 0; j < lstPedido.size(); j++){
+                if (lstPedido.get(j).verificaId(lstMesa.get(i))){
+                    retornaMesa = true;
+                }    
+            } 
+            if (retornaMesa == false){
+                cbListaMesa.addItem(lstMesa.get(i).getNomeMesa());
+            }
+           retornaMesa = false;
+        }
+    }
     
+    private void gravacaoArqPedido(List<Pedido> lstPedidos) throws IOException{
+        File file = new File("pedidos.txt");
+        file.delete();
+        FileWriter arq = new FileWriter("pedidos.txt");
+        PrintWriter gravarArq = new PrintWriter(arq);
+     
+        for (int i=0; i < lstPedidos.size(); i++) {
+            gravarArq.println(
+                lstPedidos.get(i).getNumero() + "," + lstPedidos.get(i).getData() + "," + 
+                lstPedidos.get(i).getTotal()+ "," + lstPedidos.get(i).getIdMesa().getNomeMesa() + ","); 
+        }
+        arq.close();
+    }
+    
+    private void gravacaoArqComanda(List<Pedido> comanda) throws IOException{
+        File file = new File("moviPedidos.txt");
+        file.delete();
+        
+        FileWriter arq = new FileWriter("moviPedidos.txt");
+        PrintWriter gravarArq = new PrintWriter(arq);
+        
+        for (int i=0; i < comanda.size(); i++) {
+            for(int j = 0; j < comanda.get(i).getComanda().size(); j++){
+                gravarArq.println(
+                    comanda.get(i).getComanda().get(j).getIdPedido()+ "," + comanda.get(i).getComanda().get(j).getCodCardapio().getCodigo() + "," + 
+                    comanda.get(i).getComanda().get(j).getQnt()+ "," + comanda.get(i).getComanda().get(j).getPreco()+ "," + 
+                    comanda.get(i).getComanda().get(j).getPrecoTotal());    
+            }
+        }
+        arq.close();
+    }
+    
+    private void limpaCampos(){
+        txtIdItem.setText("");
+        txtItem.setText("");
+        txtPreco.setText("");
+        txtQnt.setText("");
+        txtTotal.setText("");
+    }
 
 }
