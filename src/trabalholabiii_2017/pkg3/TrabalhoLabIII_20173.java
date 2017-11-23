@@ -131,7 +131,7 @@ public class TrabalhoLabIII_20173 {
     public static ArrayList<Mesa> leMesas() throws FileNotFoundException, IOException {
         ArrayList<Mesa> lstMesa = new ArrayList<>(); 
         
-        FileReader arq = new FileReader("mesas.txt");
+        FileReader arq = new FileReader("mesa.txt");
         BufferedReader lerArq = new BufferedReader(arq);
         String linha = lerArq.readLine(); 
         while (linha != null) {
