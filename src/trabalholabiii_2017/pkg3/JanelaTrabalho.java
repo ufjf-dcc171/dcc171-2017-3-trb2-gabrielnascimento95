@@ -202,16 +202,7 @@ public class JanelaTrabalho extends JFrame{
        
        });
        
-       txtQnt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ((!txtTotal.getText().isEmpty()) && (!txtQnt.getText().isEmpty())) {
-                    txtTotal.setText(Float.parseFloat(txtTotal.getText()) * Float.parseFloat(txtQnt.getText()) + "");
-                }
-            }
-        });
-       
-        txtItem.addActionListener(new ActionListener() {
+       txtItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int id = 0;
@@ -232,8 +223,16 @@ public class JanelaTrabalho extends JFrame{
                 }                
             }
         });
-
-    
+       
+       txtQnt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ((!txtTotal.getText().isEmpty()) && (!txtQnt.getText().isEmpty())) {
+                    txtTotal.setText(Float.parseFloat(txtTotal.getText()) * Float.parseFloat(txtQnt.getText()) + "");
+                }
+            }
+        });
+ 
     }
 
     private class acaoBotao implements ActionListener {
