@@ -61,7 +61,7 @@ public class JanelaTrabalho extends JFrame{
     private final JButton btnExcluirPedido = new JButton("Excluir Pedido");
     private final JButton btnFecharMesa = new JButton("Fechar Mesa");
     
-    private JComboBox cbListaMesa = new JComboBox(); 
+    //private JComboBox cbListaMesa = new JComboBox(); 
     
     private final JTextField txtIdItem = new JTextField();
     private final JTextField txtItem = new JTextField();
@@ -69,7 +69,9 @@ public class JanelaTrabalho extends JFrame{
     private final JTextField txtPreco = new JTextField();
     private final JLabel lblPreco = new JLabel("Preço");    
     private final JTextField txtQnt = new JTextField();
-    private final JLabel lblQnt = new JLabel("Quantidade");    
+    private final JLabel lblQnt = new JLabel("Quantidade");
+    private final JTextField txtMesa = new JTextField();
+    private final JLabel lblMesa = new JLabel("Mesa");    
     private final JTextField txtTotal = new JTextField();
     private final JLabel lblTotal = new JLabel("Total");
     private final JTextField txtTotalComanda = new JTextField();
@@ -99,7 +101,7 @@ public class JanelaTrabalho extends JFrame{
         pe.setLayout(new GridLayout(1, 3));
         pp.setLayout(new BorderLayout());
         pb.setLayout(new GridLayout(1, 2));
-        pc.setLayout(new GridLayout(10, 2));
+        pc.setLayout(new GridLayout(12, 2));
         pb.setLayout(new GridLayout(1, 1));
         pdb.setLayout(new BorderLayout());
         
@@ -116,12 +118,17 @@ public class JanelaTrabalho extends JFrame{
        txtIdItem.setEnabled(false);
        txtTotal.setEnabled(false); 
        btnFecharMesa.setEnabled(false);
-       btnSalvarPedido.setEnabled(false); 
+       btnSalvarPedido.setEnabled(false);
+       btnAlteraPedido.setEnabled(false);
+       btnCancelar.setEnabled(false);
+       btnExcluirPedido.setEnabled(false);
        txtTotalComanda.setEditable(false);
        
        
-       pc.add(cbListaMesa);
-       btnFecharMesa.setEnabled(false);    
+       //pc.add(cbListaMesa);
+          
+       pc.add(lblMesa);
+       pc.add(txtMesa);   
        pc.add(lblItem);
        pc.add(txtItem);
        pc.add(lblPreco);
@@ -170,7 +177,8 @@ public class JanelaTrabalho extends JFrame{
                     if(pedidoAberto.getComanda() != null){
                         jltComanda.setModel(new ComandaListModel(pedidoAberto.getComanda()));
                     }            
-                    cbListaMesa.setEnabled(false); 
+                    //cbListaMesa.setEnabled(false);
+                    txtMesa.setEnabled(false);
                     jltPedidos.setEnabled(false);
                     btnFecharMesa.setEnabled(true);
                     btnSalvarPedido.setEnabled(true);
@@ -186,6 +194,9 @@ public class JanelaTrabalho extends JFrame{
            @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 1){
+                    btnSalvarPedido.setEnabled(true);
+                    btnAlteraPedido.setEnabled(true);
+                    btnCancelar.setEnabled(true);
                     txtIdItem.setText("");
                     txtItem.setText("");
                     txtTotal.setText("");
@@ -194,7 +205,7 @@ public class JanelaTrabalho extends JFrame{
                     Cardapio itemSelecionado = jltCardapio.getSelectedValue();                    
                     txtIdItem.setText(itemSelecionado.getCodigo() + ""); 
                     txtItem.setText(itemSelecionado.getNome()); 
-                    txtTotal.setText(itemSelecionado.getPreco()+ ""); 
+                    txtPreco.setText(itemSelecionado.getPreco()+ ""); 
                     verificaNovoItem = true;
                 }
              }
@@ -245,7 +256,8 @@ public class JanelaTrabalho extends JFrame{
             float auxTotalMesa = 0;
             
             if(e.getSource() == btnNovoPedido){
-                cbListaMesa.setEnabled(true);
+                txtMesa.setEnabled(true);
+                //cbListaMesa.setEnabled(true);
                 btnNovoPedido.setEnabled(true);
                 btnSalvarPedido.setEnabled(true);
                 verificaNovoPedido = true;
@@ -264,9 +276,9 @@ public class JanelaTrabalho extends JFrame{
                     jltPedidos.setEnabled(true);
                     Pedido aux  = jltPedidos.getSelectedValue();
                     aux.setTotal(retornaPreco(aux));
-                    if(verificaNovoPedido){
-                        atualizaListaMesa();
-                    }
+                    //if(verificaNovoPedido){
+                    //    atualizaListaMesa();
+                    //}
                     jltPedidos.updateUI();
                     jltPedidos.clearSelection();
                     btnSalvarPedido.setEnabled(true);
@@ -284,7 +296,8 @@ public class JanelaTrabalho extends JFrame{
                     jltPedidos.updateUI();
                     jltPedidos.setEnabled(verificaNovoPedido);
                     btnSalvarPedido.setEnabled(false);
-                    cbListaMesa.setEnabled(true);
+                    //cbListaMesa.setEnabled(true);
+                    txtMesa.setEnabled(true);
                 }
                 limpaCampos();
                 btnNovoPedido.setEnabled(true);
@@ -343,9 +356,10 @@ public class JanelaTrabalho extends JFrame{
                     lstPedido.remove(aux);
                     jltPedidos.updateUI();
                     jltPedidos.setEnabled(true);
-                    cbListaMesa.setEnabled(true);
+                    txtMesa.setEnabled(true);
+                    //cbListaMesa.setEnabled(true);
                     btnSalvarPedido.setEnabled(false);
-                    atualizaListaMesa();
+                    //atualizaListaMesa();
                     jltComanda.setModel(new DefaultListModel());
                     try {
                         gravacaoArqComanda(lstPedido);
@@ -378,7 +392,7 @@ public class JanelaTrabalho extends JFrame{
         private Mesa procuraMesa(){
              Mesa auxMesa = new Mesa();
              for(int i=0; i < lstMesa.size(); i++){
-                 if(lstMesa.get(i).getNomeMesa() == cbListaMesa.getSelectedItem().toString()){
+                 if(lstMesa.get(i).getNomeMesa() == txtMesa.getText()){//cbListaMesa.getSelectedItem().toString()){
                      auxMesa = lstMesa.get(i);
                  }
              }
@@ -395,6 +409,7 @@ public class JanelaTrabalho extends JFrame{
         return total;
     }
     
+    /*
     private void atualizaListaMesa(){
         cbListaMesa.removeAllItems();
         for(int i = 0; i < lstMesa.size(); i++){
@@ -409,6 +424,7 @@ public class JanelaTrabalho extends JFrame{
            retornaMesa = false;
         }
     }
+    */
     
     private void gravacaoArqPedido(List<Pedido> lstPedidos) throws IOException{
         File file = new File("pedidos.txt");
