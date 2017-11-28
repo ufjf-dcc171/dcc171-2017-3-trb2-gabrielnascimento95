@@ -27,7 +27,7 @@ public class TrabalhoLabIII_20173 {
     public static void main(String[] args) {
         
         try {
-            JanelaTrabalhoEditada janela = new JanelaTrabalhoEditada(leComanda(leCardapio()), leCardapio(), lePedido(leMesas(), leComanda(leCardapio())), leMesas());
+            JanelaTrabalhoEditada janela = new JanelaTrabalhoEditada(leComanda(leCardapio()), leCardapio(), lePedido(), leMesas());
             janela.setSize(540, 650);
             janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             janela.setLocationRelativeTo(null);
@@ -94,7 +94,7 @@ public class TrabalhoLabIII_20173 {
         return lstProdutos;
     }
      
-    public static ArrayList<Pedido> lePedido(List<Mesa> mesas, List<Comanda> comanda) throws FileNotFoundException, IOException {
+    public static ArrayList<Pedido> lePedido() throws FileNotFoundException, IOException {
         ArrayList<Pedido> lstPedido = new ArrayList<>();
         FileReader arq = new FileReader("pedidos.txt");
         BufferedReader lerArq = new BufferedReader(arq);
@@ -106,23 +106,7 @@ public class TrabalhoLabIII_20173 {
             String data = tag[1];
             Float total = Float.parseFloat(tag[2]);
             String mesa = tag[3];
-            Mesa mesaPedido = null;
-            
-            for (int i = 0; i < mesas.size(); i++) {
-                if (mesas.get(i).getId() == Integer.parseInt(mesa)){
-                    mesaPedido = mesas.get(i);
-                }                
-            }
-            
-            Pedido pedido = new Pedido(id, data, total, mesaPedido);
-            lstPedido.add(pedido);
-            
-            for(int j = 0; j < comanda.size(); j++ ){
-                if (comanda.get(j).getIdPedido().equals(id)){
-                    pedido.getComanda().add(comanda.get(j));
-                }
-            }
-            
+            String prod = tag[4];
             linha = lerArq.readLine(); 
         }
         return lstPedido;

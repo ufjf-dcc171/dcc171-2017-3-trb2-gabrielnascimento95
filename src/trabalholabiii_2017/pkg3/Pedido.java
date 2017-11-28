@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 public class Pedido {
     private String numero;
     private String data;
+    private String produto;
     private List<Comanda> comanda;
     private Float total;
     private Mesa idMesa;
@@ -23,9 +24,10 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(String numero, String data, float total, Mesa idMesa) {
+    public Pedido(String numero, String data, String Produto, float total, Mesa idMesa) {
         this.numero = numero;
         this.data = data;
+        this.produto = produto;
         this.total = total;
         this.idMesa = idMesa;
         this.comanda = new ArrayList<>();
@@ -86,6 +88,14 @@ public class Pedido {
 
     void setTotal(float total) {
         this.total= total;
+    }
+
+    public String getProduto() {
+        return produto;
+    }
+
+    public void setProduto(String produto) {
+        this.produto = produto;
     }
 
    
