@@ -27,8 +27,8 @@ public class TrabalhoLabIII_20173 {
     public static void main(String[] args) {
         
         try {
-            JanelaTrabalho janela = new JanelaTrabalho(leComanda(leCardapio()), leCardapio(), lePedido(leMesas(), leComanda(leCardapio())), leMesas());
-            janela.setSize(680, 650);
+            JanelaTrabalhoEditada janela = new JanelaTrabalhoEditada(leComanda(leCardapio()), leCardapio(), lePedido(leMesas(), leComanda(leCardapio())), leMesas());
+            janela.setSize(540, 650);
             janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             janela.setLocationRelativeTo(null);
             janela.setVisible(true);

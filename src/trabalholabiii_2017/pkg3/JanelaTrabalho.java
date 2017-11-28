@@ -145,7 +145,8 @@ public class JanelaTrabalho extends JFrame{
        pd.add(pc, BorderLayout.WEST);
        pd.add(new JScrollPane(jltCardapio), BorderLayout.SOUTH);
         
-       pdb.add(new JScrollPane(jltComanda), BorderLayout.NORTH);
+       pdb.add(new JScrollPane(jltMesas), BorderLayout.NORTH);
+       //pdb.add(new JScrollPane(jltComanda), BorderLayout.SOUTH);
        pdb.add(lblTotalComanda, BorderLayout.CENTER);
        pdb.add(txtTotalComanda, BorderLayout.SOUTH);
         
@@ -238,11 +239,21 @@ public class JanelaTrabalho extends JFrame{
        txtQnt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if ((!txtTotal.getText().isEmpty()) && (!txtQnt.getText().isEmpty())) {
-                    txtTotal.setText(Float.parseFloat(txtTotal.getText()) * Float.parseFloat(txtQnt.getText()) + "");
+                if ((!txtPreco.getText().isEmpty()) && (!txtQnt.getText().isEmpty())) {
+                    txtTotal.setText(Float.parseFloat(txtPreco.getText()) * Float.parseFloat(txtQnt.getText()) + "");
                 }
             }
         });
+       
+       jltMesas.addMouseListener(new MouseAdapter() {
+           @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 1){
+                    Mesa mesaSelecionada = jltMesas.getSelectedValue();
+                    txtMesa.setText(mesaSelecionada.getNomeMesa());
+                }
+            }
+       });
  
     }
 
@@ -308,7 +319,7 @@ public class JanelaTrabalho extends JFrame{
             }else if(e.getSource() == btnAlteraPedido){
                Pedido pedido = jltPedidos.getSelectedValue();
                float vTotal = 0;
-                    if (verificaNovoPedido == false){
+                    if (verificaNovoPedido == true){
                         Comanda comanda = jltComanda.getSelectedValue();
                         comanda.setIdPedido(comanda.getIdPedido());
                         comanda.setQnt(Integer.parseInt(txtQnt.getText()));
@@ -318,7 +329,7 @@ public class JanelaTrabalho extends JFrame{
                         vTotal = Float.parseFloat(txtQnt.getText()) * (Float.parseFloat(txtPreco.getText()));
                         Comanda comanda = new Comanda(jltCardapio.getSelectedValue(), Integer.parseInt(txtQnt.getText()), Float.parseFloat(txtPreco.getText()), vTotal);
                         comanda.setIdPedido(comanda.getIdPedido());
-                        if (verificaNovoPedido == true){                            
+                        if (verificaNovoPedido == false){                            
                             lstComanda.add(comanda);
                             pedido.setComanda(lstComanda);
                         }else{
