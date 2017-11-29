@@ -29,7 +29,6 @@ public class Pedido {
         this.produto = item;
         this.total = total;
         this.mesa = idMesa;
-       // this.comanda = new ArrayList<>();
     }
 
     @Override
@@ -68,15 +67,7 @@ public class Pedido {
     public void setMesa(String mesa) {
         this.mesa = mesa;
     }
-    /*
-    public boolean verificaId (Mesa codMesa){
-        if (codMesa.getId() != this.mesa.getId()){
-            return false;
-        }else{
-            return true;
-        }        
-    }
-    */
+    
     void setTotal(float total) {
         this.total= total;
     }

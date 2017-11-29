@@ -77,7 +77,6 @@ public class JanelaTrabalhoEditada extends JFrame{
     private final JList<Mesa> jltMesas = new JList<Mesa>(new DefaultListModel<>());
     private final JList<Cardapio> jltCardapio = new JList<Cardapio>(new DefaultListModel<>());
     private final JList<Pedido> jltPedidos = new JList<Pedido>(new DefaultListModel<>());
-    private final JList<Balanco> jltHistorico = new JList<Balanco>(new DefaultListModel<>());
     
     private Date data;
     private String dataString;
@@ -102,7 +101,6 @@ public class JanelaTrabalhoEditada extends JFrame{
        jltPedidos.setModel(new PedidoListModel(lstPedido));
        
        jltCardapio.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-       jltHistorico.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
        jltMesas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
        jltPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
        
@@ -142,7 +140,6 @@ public class JanelaTrabalhoEditada extends JFrame{
         
        pb.add(btnNovoPedido);
        pb.add(btnRelatorio);
-       //pb.add(btnCancelar);
         
        pp.add(pd, BorderLayout.CENTER);
        pp.add(pe, BorderLayout.NORTH);
@@ -238,139 +235,59 @@ public class JanelaTrabalhoEditada extends JFrame{
             
             if(e.getSource() == btnNovoPedido){
                 btnAlteraPedido.setEnabled(true);
-                
-                /*
-                Mesa mesaSelecionada = jltMesas.getSelectedValue();
-                btnNovoPedido.setEnabled(false);
-                btnSalvarPedido.setEnabled(true);
-                btnCancelar.setEnabled(true);
-                Pedido pedido = new Pedido();
-                pedido.setData(txtData + "");
-                pedido.setNumero(String.valueOf(verificaUltimoPedido()));
-                pedido.setTotal(0);
-                pedido.setIdMesa(mesaSelecionada);
-                lstPedido.add(pedido);
-                jltPedidos.updateUI();
-                jltPedidos.setSelectedIndex(verificaUltimoPedido());
-                */
-                
+                JOptionPane.showMessageDialog(null, "Selecione a mesa e o item do cardápio.");
             }else if(e.getSource() == btnAlteraPedido){
                Pedido pedidoExistente = jltPedidos.getSelectedValue();
                Mesa mesaAtual = jltMesas.getSelectedValue();
                Pedido pedidoNovo;
-               float vTotal = 0;
-               String numero  = String.valueOf(mesaAtual.getId());
+               float valorTotal = 0;
+               String numeroPedido  = String.valueOf(verificaUltimoPedido());
                if(pedidoExistente == null){
-                 vTotal = Float.parseFloat(txtQnt.getText()) * (Float.parseFloat(txtPreco.getText()));
-                 pedidoNovo = new Pedido(numero,dataString, txtItem.getText(), vTotal, mesaAtual.getNomeMesa());
+                 valorTotal = Float.parseFloat(txtQnt.getText()) * (Float.parseFloat(txtPreco.getText()));
+                 pedidoNovo = new Pedido(numeroPedido,dataString, txtItem.getText(), valorTotal, mesaAtual.getNomeMesa());
                  lstPedido.add(pedidoNovo);
                    try {
                        gravacaoArqPedido(lstPedido);
                        gravacaoArqHistorico(lstPedido);
                        limpaCampos();
                        JOptionPane.showMessageDialog(null, "Item adicionado com sucesso a mesa " + mesaAtual.getId());
+                       txtTotalComanda.setText("R$ " + valorTotal);
+                       jltPedidos.updateUI();
                    } catch (IOException ex) {
                        Logger.getLogger(JanelaTrabalhoEditada.class.getName()).log(Level.SEVERE, null, ex);
                    }
                } 
                
-               /*
-                   if(){
-                        Comanda comanda = jltComanda.getSelectedValue();
-                        comanda.setIdPedido(comanda.getIdPedido());
-                        comanda.setQnt(Integer.parseInt(txtQnt.getText()));
-                        comanda.setPreco(Float.parseFloat(txtPreco.getText()));
-                        comanda.setPrecoTotal(Float.parseFloat(txtQnt.getText()) * (Float.parseFloat(txtPreco.getText())));
-                    }else{                        
-                        vTotal = Float.parseFloat(txtQnt.getText()) * (Float.parseFloat(txtPreco.getText()));
-                        Comanda comanda = new Comanda(jltCardapio.getSelectedValue(), Integer.parseInt(txtQnt.getText()), Float.parseFloat(txtPreco.getText()), vTotal);
-                        comanda.setIdPedido(comanda.getIdPedido());
-                        if ( == false){                            
-                            lstComanda.add(comanda);
-                            pedido.setComanda(lstComanda);
-                        }else{
-                            pedido.getComanda().add(comanda);
-                        }
-                    }
-                   
-                    txtTotalComanda.setText("R$ " + calculadora());
-                    txtTotal.setText("R$ 0,00");
-                    jltComanda.setModel(new ComandaListModel(pedidoExistente.getComanda()));
-                    jltComanda.updateUI();
-                    jltComanda.setEnabled(true);
-                    
-                    limpaCampos(); 
-            
             }else if(e.getSource() == btnExcluirPedido){
-                 if (!jltComanda.isEnabled() == false){ 
-                    Pedido pedido = jltPedidos.getSelectedValue();
-                    pedido.getComanda().remove(jltComanda.getSelectedValue());
-                    jltComanda.updateUI();                   
-                    txtTotalComanda.setText("R$ " + calculadora());
-                    limpaCampos();      
-                }           
-            }else if(e.getSource() == btnFecharMesa){
-                if(!jltPedidos.isSelectionEmpty()){
-                    limpaCampos();
-                    Pedido aux = jltPedidos.getSelectedValue();
-                    int index = jltPedidos.getSelectedIndex();
-                    if(lstHistorico.size()>0){
-                        lstHistorico.remove(lstHistorico.get(0));
-                    }
-                    while(aux.getComanda().size() > 0){
-                        lstHistorico.add(aux.getComanda().get(0));
-                        aux.getComanda().remove(aux.getComanda().get(0));
-                    }
-                    JOptionPane.showMessageDialog(null, "Mesa Fechada \n Total: " + aux.getTotal());
-                    lstPedido.remove(aux);
+                 if (!jltPedidos.isSelectionEmpty()){ 
+                    lstPedido.remove(jltPedidos.getSelectedValue());
                     jltPedidos.updateUI();
-                    jltPedidos.setEnabled(true);
-                    txtMesa.setEnabled(true);
-                    //cbListaMesa.setEnabled(true);
-                    btnSalvarPedido.setEnabled(false);
-                    //atualizaListaMesa();
-                    jltComanda.setModel(new DefaultListModel());
-                    try {
-                        gravacaoArqComanda(lstPedido);
-                        gravacaoArqPedido(lstPedido);
-                    } catch (IOException ex) {
-                        Logger.getLogger(JanelaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    txtTotalComanda.setText("R$ 0,00");
+                    limpaCampos();      
                 }
-               */
-            } 
+                 
+            }
+            else if(e.getSource() == btnFecharMesa){
+                float auxTotal;
+                if(!jltPedidos.isSelectionEmpty()){
+                    
+               
+                 } 
+            }
         }
         
-        /*
         private float retornaPreco(Pedido aux){
             float auxPreco = 0;
-            for(int i = 0; i < aux.getComanda().size(); i++){
-                auxPreco = auxPreco + aux.getComanda().get(i).getPreco();
-            }
+            auxPreco = aux.getTotal();
             return auxPreco;
         }
-        */
+        
         
         private int verificaUltimoPedido() {
-            int aux = 0;
-            String id = "";
-            for(int i = 0; i < lstPedido.size(); i++){
-                id = lstPedido.get(i).getNumero();
-            }
-            aux = Integer.parseInt(id) + 1;
-            return aux;
+            int aux = lstPedido.size();
+            return aux+1;
         }
-        /*
-        private Mesa procuraMesa(){
-             Mesa auxMesa = new Mesa();
-             for(int i=0; i < lstMesa.size(); i++){
-                 if(lstMesa.get(i).getNomeMesa() == txtMesa.getText()){
-                     auxMesa = lstMesa.get(i);
-                 }
-             }
-             return auxMesa;
-        }
-        */
+        
     }
     /*
     private float calculadora(){
