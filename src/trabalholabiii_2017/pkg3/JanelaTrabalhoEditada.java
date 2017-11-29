@@ -44,7 +44,7 @@ public class JanelaTrabalhoEditada extends JFrame{
     private ArrayList<Cardapio> lstCardapio; 
     private ArrayList<Mesa> lstMesa; 
     private ArrayList<Pedido> lstPedido;
-    private ArrayList<Comanda> lstHistorico;
+    //private ArrayList<Comanda> lstHistorico;
     
     private final JPanel pd = new JPanel();
     private final JPanel pe = new JPanel();
@@ -159,7 +159,7 @@ public class JanelaTrabalhoEditada extends JFrame{
                 if (evt.getClickCount() == 1){                    
                     txtMesa.setEnabled(false);
                     jltPedidos.setEnabled(false);
-                    btnFecharMesa.setEnabled(true);
+                    btnExcluirPedido.setEnabled(true);
                     btnFecharMesa.setEnabled(true);
                     txtTotalComanda.setText("R$ " );//+ calculadora());
                 }
@@ -261,17 +261,23 @@ public class JanelaTrabalhoEditada extends JFrame{
             }else if(e.getSource() == btnExcluirPedido){
                  if (!jltPedidos.isSelectionEmpty()){ 
                     lstPedido.remove(jltPedidos.getSelectedValue());
-                    jltPedidos.updateUI();
                     txtTotalComanda.setText("R$ 0,00");
+                    jltPedidos.updateUI();
                     limpaCampos();      
                 }
                  
             }
             else if(e.getSource() == btnFecharMesa){
-                float auxTotal;
+                float auxTotal = 0;
                 if(!jltPedidos.isSelectionEmpty()){
-                    
-               
+                    Pedido pedidoAux = jltPedidos.getSelectedValue();
+                    for(int i = 0; i <lstPedido.size(); i++){
+                        if(lstPedido.get(i).getMesa() == pedidoAux.getMesa()){
+                            auxTotal = auxTotal + lstPedido.get(i).getTotal();
+                        }
+                    }
+                    String mesa = pedidoAux.getMesa();
+                    JOptionPane.showMessageDialog(null, mesa + "\nTotal: R$ " + auxTotal);
                  } 
             }
         }

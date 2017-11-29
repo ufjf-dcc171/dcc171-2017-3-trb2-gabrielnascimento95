@@ -33,7 +33,7 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return  "Mesa " +mesa + " - " + produto + " - " + "R$ " + total + " "+ data + " - ";
+        return mesa + " - " + produto + " - " + "R$ " + total + " - "+ data;
     }   
 
     public String getNumero() {

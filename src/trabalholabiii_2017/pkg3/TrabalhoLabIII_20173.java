@@ -43,10 +43,10 @@ public class TrabalhoLabIII_20173 {
         }
         
     }
-    
-    public static ArrayList<Comanda> leComanda(List<Cardapio> cardapio) throws FileNotFoundException, IOException {
+    /*
+    public static ArrayList<Historico> leComanda(List<Cardapio> cardapio) throws FileNotFoundException, IOException {
         ArrayList<Comanda> lstComanda = new ArrayList<>();
-        FileReader arq = new FileReader("comanda.txt");
+        FileReader arq = new FileReader("historico.txt");
         BufferedReader lerArq = new BufferedReader(arq);
 
         String linha = lerArq.readLine(); 
@@ -70,7 +70,7 @@ public class TrabalhoLabIII_20173 {
         }
         return lstComanda;
     }
-    
+    */
      public static ArrayList<Cardapio> leCardapio() throws FileNotFoundException, IOException {
         ArrayList<Cardapio> lstProdutos = new ArrayList<>();
         
