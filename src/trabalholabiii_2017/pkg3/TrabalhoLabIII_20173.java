@@ -27,8 +27,8 @@ public class TrabalhoLabIII_20173 {
     public static void main(String[] args) {
         
         try {
-            JanelaTrabalhoEditada janela = new JanelaTrabalhoEditada(leComanda(leCardapio()), leCardapio(), lePedido(), leMesas());
-            janela.setSize(540, 650);
+            JanelaTrabalhoEditada janela = new JanelaTrabalhoEditada(leCardapio(), lePedido(), leMesas());
+            janela.setSize(600, 650);
             janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             janela.setLocationRelativeTo(null);
             janela.setVisible(true);
@@ -96,6 +96,7 @@ public class TrabalhoLabIII_20173 {
      
     public static ArrayList<Pedido> lePedido() throws FileNotFoundException, IOException {
         ArrayList<Pedido> lstPedido = new ArrayList<>();
+        Pedido pedidoLista;
         FileReader arq = new FileReader("pedidos.txt");
         BufferedReader lerArq = new BufferedReader(arq);
 
@@ -107,6 +108,8 @@ public class TrabalhoLabIII_20173 {
             Float total = Float.parseFloat(tag[2]);
             String mesa = tag[3];
             String prod = tag[4];
+            pedidoLista = new Pedido(id,data,prod,total,mesa); 
+            lstPedido.add(pedidoLista);
             linha = lerArq.readLine(); 
         }
         return lstPedido;

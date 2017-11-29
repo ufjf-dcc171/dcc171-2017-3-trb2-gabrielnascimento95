@@ -39,6 +39,6 @@ public class Mesa {
     
     @Override
     public String toString(){
-       return id + "  " + nomeMesa; 
+       return nomeMesa; 
     }
 }

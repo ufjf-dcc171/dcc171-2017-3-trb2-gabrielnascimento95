@@ -17,25 +17,24 @@ public class Pedido {
     private String numero;
     private String data;
     private String produto;
-    private List<Comanda> comanda;
     private Float total;
-    private Mesa idMesa;
+    private String mesa;
 
     public Pedido() {
     }
 
-    public Pedido(String numero, String data, String Produto, float total, Mesa idMesa) {
+    public Pedido(String numero, String data, String item, float total, String idMesa) {
         this.numero = numero;
         this.data = data;
-        this.produto = produto;
+        this.produto = item;
         this.total = total;
-        this.idMesa = idMesa;
-        this.comanda = new ArrayList<>();
+        this.mesa = idMesa;
+       // this.comanda = new ArrayList<>();
     }
 
     @Override
     public String toString() {
-        return  idMesa.getNomeMesa() + " - " + total;
+        return  "Mesa " +mesa + " - " + produto + " - " + "R$ " + total + " "+ data + " - ";
     }   
 
     public String getNumero() {
@@ -53,15 +52,7 @@ public class Pedido {
     public void setData(String data) {
         this.data = data;
     }
-
-    public List<Comanda> getComanda() {
-        return comanda;
-    }
-
-    public void setComanda(List<Comanda> movimento) {
-        this.comanda = movimento;
-    }
-
+   
     public Float getTotal() {
         return total;
     }
@@ -70,22 +61,22 @@ public class Pedido {
         this.total = total;
     }
 
-    public Mesa getIdMesa() {
-        return idMesa;
+    public String getMesa() {
+        return mesa;
     }
 
-    public void setIdMesa(Mesa idMesa) {
-        this.idMesa = idMesa;
+    public void setMesa(String mesa) {
+        this.mesa = mesa;
     }
-    
+    /*
     public boolean verificaId (Mesa codMesa){
-        if (codMesa.getId() != this.idMesa.getId()){
+        if (codMesa.getId() != this.mesa.getId()){
             return false;
         }else{
             return true;
         }        
     }
-
+    */
     void setTotal(float total) {
         this.total= total;
     }
