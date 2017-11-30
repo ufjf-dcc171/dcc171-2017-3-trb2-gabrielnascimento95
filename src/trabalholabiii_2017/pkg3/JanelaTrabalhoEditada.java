@@ -157,11 +157,9 @@ public class JanelaTrabalhoEditada extends JFrame{
            @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 1){                    
-                    txtMesa.setEnabled(false);
-                    jltPedidos.setEnabled(false);
                     btnExcluirPedido.setEnabled(true);
                     btnFecharMesa.setEnabled(true);
-                    txtTotalComanda.setText("R$ " );//+ calculadora());
+                    txtTotalComanda.setText("R$ " + calculadora());
                 }
              } 
            
@@ -251,7 +249,7 @@ public class JanelaTrabalhoEditada extends JFrame{
                        gravacaoArqHistorico(lstPedido);
                        limpaCampos();
                        JOptionPane.showMessageDialog(null, "Item adicionado com sucesso a mesa " + mesaAtual.getId());
-                       txtTotalComanda.setText("R$ " + valorTotal);
+                       txtTotalComanda.setText("R$ " + calculadora());
                        jltPedidos.updateUI();
                    } catch (IOException ex) {
                        Logger.getLogger(JanelaTrabalhoEditada.class.getName()).log(Level.SEVERE, null, ex);
@@ -263,6 +261,7 @@ public class JanelaTrabalhoEditada extends JFrame{
                     lstPedido.remove(jltPedidos.getSelectedValue());
                     txtTotalComanda.setText("R$ 0,00");
                     jltPedidos.updateUI();
+                    jltPedidos.clearSelection();
                     limpaCampos();      
                 }
                  
@@ -271,13 +270,13 @@ public class JanelaTrabalhoEditada extends JFrame{
                 float auxTotal = 0;
                 if(!jltPedidos.isSelectionEmpty()){
                     Pedido pedidoAux = jltPedidos.getSelectedValue();
-                    for(int i = 0; i <lstPedido.size(); i++){
-                        if(lstPedido.get(i).getMesa() == pedidoAux.getMesa()){
-                            auxTotal = auxTotal + lstPedido.get(i).getTotal();
-                        }
-                    }
+                    auxTotal = calculadora();
                     String mesa = pedidoAux.getMesa();
                     JOptionPane.showMessageDialog(null, mesa + "\nTotal: R$ " + auxTotal);
+                    JOptionPane.showMessageDialog(null, "Mesa Fechada!");
+                    lstPedido.remove(pedidoAux);
+                    txtTotalComanda.setText("R$ 0,00");
+                    jltPedidos.updateUI();
                  } 
             }
         }
@@ -295,32 +294,27 @@ public class JanelaTrabalhoEditada extends JFrame{
         }
         
     }
-    /*
+    
     private float calculadora(){
-        float total = 0;
-        Pedido pedido = jltPedidos.getSelectedValue();                
-        for(int i = 0; i < pedido.getComanda().size(); i++){
-            total = total + pedido.getComanda().get(i).getPrecoTotal();
-        }
-        return total;
-    }
-    
-    
-    private void atualizaListaMesa(){
-        cbListaMesa.removeAllItems();
-        for(int i = 0; i < lstMesa.size(); i++){
-            for(int j = 0; j < lstPedido.size(); j++){
-                if (lstPedido.get(j).verificaId(lstMesa.get(i))){
-                    retornaMesa = true;
-                }    
-            } 
-            if (retornaMesa == false){
-                cbListaMesa.addItem(lstMesa.get(i).getNomeMesa());
+        float auxTotal = 0;
+        if(!jltPedidos.isSelectionEmpty()){
+            Pedido pedidoAux = jltPedidos.getSelectedValue();
+            for(int i = 0; i <lstPedido.size(); i++){
+                if(lstPedido.get(i).getMesa().equals(pedidoAux.getMesa())){
+                    auxTotal = auxTotal + lstPedido.get(i).getTotal();
+                }              
             }
-           retornaMesa = false;
+        }else if(!jltMesas.isSelectionEmpty()){
+            Mesa mesaAux = jltMesas.getSelectedValue();
+            for(int i = 0; i <lstPedido.size(); i++){
+                if(lstPedido.get(i).getMesa().equals(mesaAux.getNomeMesa())){
+                    auxTotal = auxTotal + lstPedido.get(i).getTotal();
+                }              
+            }
         }
+        return auxTotal;
     }
-    */
+    
     
     private void gravacaoArqPedido(List<Pedido> lstPedidos) throws IOException{
         File file = new File("pedidos.txt");
@@ -339,10 +333,12 @@ public class JanelaTrabalhoEditada extends JFrame{
     private void gravacaoArqHistorico(List<Pedido> lstPedidos) throws IOException{
         FileWriter arq = new FileWriter("historico.txt");
         PrintWriter gravarArq = new PrintWriter(arq);
+        float totalDiario = 0;
         for (int i=0; i < lstPedidos.size(); i++) {
+            totalDiario += lstPedidos.get(i).getTotal();
             gravarArq.println(
-                lstPedidos.get(i).getNumero() + "," + lstPedidos.get(i).getData() + "," + 
-                lstPedidos.get(i).getTotal()+ "," + lstPedidos.get(i).getMesa() + "," + lstPedidos.get(i).getProduto()); 
+                    "Total Acumulado: R$ " + "," + totalDiario + ", " + lstPedidos.get(i).getData()
+            ); 
         }
         arq.close();
     }

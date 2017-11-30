@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,34 +44,24 @@ public class TrabalhoLabIII_20173 {
         }
         
     }
-    /*
-    public static ArrayList<Historico> leComanda(List<Cardapio> cardapio) throws FileNotFoundException, IOException {
-        ArrayList<Comanda> lstComanda = new ArrayList<>();
+    
+    public static ArrayList<Historico> leComanda() throws FileNotFoundException, IOException {
+        ArrayList<Historico> lstHistorico = new ArrayList<>();
         FileReader arq = new FileReader("historico.txt");
         BufferedReader lerArq = new BufferedReader(arq);
 
         String linha = lerArq.readLine(); 
         while (linha != null) {
             String[] tag = linha.split(",");
-            String numPedido =  tag[0];
-            String codCardapio =  tag[1];
-            Integer qnt = Integer.parseInt(tag[2]);
-            Float preco = Float.parseFloat(tag[3]);
-            Float precoF = Float.parseFloat(tag[4]);
-            Cardapio produtoPedido = null;
-            for (int i = 0; i < cardapio.size(); i++) {
-                if (cardapio.get(i).getCodigo() == Integer.parseInt(codCardapio)){
-                    produtoPedido = cardapio.get(i);
-                }                
-            }         
-            Comanda aux = new Comanda(produtoPedido, qnt, preco, precoF);
-            aux.setIdPedido(numPedido);
-            lstComanda.add(aux);
+            String info =  tag[0];
+            Float total = Float.parseFloat(tag[1]);
+            String data = tag[2];
+            Historico history = new Historico(total, data);
             linha = lerArq.readLine(); 
         }
-        return lstComanda;
+        return lstHistorico;
     }
-    */
+    
      public static ArrayList<Cardapio> leCardapio() throws FileNotFoundException, IOException {
         ArrayList<Cardapio> lstProdutos = new ArrayList<>();
         
