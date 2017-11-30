@@ -77,6 +77,7 @@ public class JanelaTrabalhoEditada extends JFrame{
     private final JList<Mesa> jltMesas = new JList<Mesa>(new DefaultListModel<>());
     private final JList<Cardapio> jltCardapio = new JList<Cardapio>(new DefaultListModel<>());
     private final JList<Pedido> jltPedidos = new JList<Pedido>(new DefaultListModel<>());
+    private final JList<Historico> jltHistorico = new JList<Historico>(new DefaultListModel<>());
     
     private Date data;
     private String dataString;
@@ -99,10 +100,12 @@ public class JanelaTrabalhoEditada extends JFrame{
        jltMesas.setModel(new MesaListModel(lstMesa));
        jltCardapio.setModel(new CardapioListModel(lstCardapio));
        jltPedidos.setModel(new PedidoListModel(lstPedido));
+       jltHistorico.setModel(new HistoricoListModel(leHistorico));
        
        jltCardapio.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
        jltMesas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
        jltPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+       jltHistorico.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
        
        txtIdItem.setEnabled(false);
        txtTotal.setEnabled(false); 
@@ -344,7 +347,7 @@ public class JanelaTrabalhoEditada extends JFrame{
         for (int i=0; i < lstPedidos.size(); i++) {
             totalDiario += lstPedidos.get(i).getTotal();
             gravarArq.println(
-                    "Total Acumulado: R$ " + "," + totalDiario + ", " + lstPedidos.get(i).getData()
+                    "Total Acumulado: R$ " + "," + totalDiario + ", " + lstPedidos.get(i).getData() + "," + lstPedido.get(i).getNumero()
             ); 
         }
         arq.close();

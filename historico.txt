@@ -1,6 +1,6 @@
-Total Acumulado,60.0, Wed Nov 29 17:36:36 BRST 2017
-Total Acumulado,76.0, Wed Nov 29 17:36:36 BRST 2017
-Total Acumulado,116.0, Wed Nov 29 17:36:36 BRST 2017
-Total Acumulado,127.0, Wed Nov 29 17:42:31 BRST 2017
-Total Acumulado,151.0, Wed Nov 29 22:25:32 BRST 2017
-Total Acumulado,191.0, Wed Nov 29 22:35:09 BRST 2017
+Total Acumulado,60.0, Wed Nov 29 17:36:36 BRST 2017,3
+Total Acumulado,76.0, Wed Nov 29 17:36:36 BRST 2017,3
+Total Acumulado,116.0, Wed Nov 29 17:36:36 BRST 2017,3
+Total Acumulado,127.0, Wed Nov 29 17:42:31 BRST 2017,5
+Total Acumulado,151.0, Wed Nov 29 22:25:32 BRST 2017,4
+Total Acumulado,191.0, Wed Nov 29 22:35:09 BRST 2017,1

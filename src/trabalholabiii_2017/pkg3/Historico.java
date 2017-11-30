@@ -14,10 +14,12 @@ import java.util.Date;
 public class Historico {
     private float total;
     private String data;
+    private String id;
 
-    public Historico(float t, String data) {
+    public Historico(float t, String data, String idd) {
         this.data = data;
         this.total = t;
+        this.id = idd;
     }
 
     public Historico() {
@@ -37,6 +39,14 @@ public class Historico {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
     
     

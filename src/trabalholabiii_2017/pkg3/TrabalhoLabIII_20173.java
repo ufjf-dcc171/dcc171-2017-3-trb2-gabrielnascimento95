@@ -56,7 +56,8 @@ public class TrabalhoLabIII_20173 {
             String info =  tag[0];
             Float total = Float.parseFloat(tag[1]);
             String data = tag[2];
-            Historico history = new Historico(total, data);
+            String id = tag[3];
+            Historico history = new Historico(total, data, id);
             lstHistorico.add(history);
             linha = lerArq.readLine(); 
         }
