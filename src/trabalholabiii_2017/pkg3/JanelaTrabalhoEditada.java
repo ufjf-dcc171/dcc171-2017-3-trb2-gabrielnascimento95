@@ -44,7 +44,7 @@ public class JanelaTrabalhoEditada extends JFrame{
     private ArrayList<Cardapio> lstCardapio; 
     private ArrayList<Mesa> lstMesa; 
     private ArrayList<Pedido> lstPedido;
-    //private ArrayList<Comanda> lstHistorico;
+    private ArrayList<Historico> lstHistorico;
     
     private final JPanel pd = new JPanel();
     private final JPanel pe = new JPanel();
@@ -81,8 +81,8 @@ public class JanelaTrabalhoEditada extends JFrame{
     private Date data;
     private String dataString;
 
-    public JanelaTrabalhoEditada(ArrayList<Cardapio> leCardapio, ArrayList<Pedido> lePedido, ArrayList<Mesa> leMesa) throws HeadlessException, IOException{
-        
+    public JanelaTrabalhoEditada(ArrayList<Historico> leHistorico, ArrayList<Cardapio> leCardapio, ArrayList<Pedido> lePedido, ArrayList<Mesa> leMesa) throws HeadlessException, IOException{
+        this.lstHistorico = leHistorico;
         this.lstCardapio = leCardapio;
         this.lstMesa = leMesa;
         this.lstPedido = lePedido;
@@ -278,6 +278,13 @@ public class JanelaTrabalhoEditada extends JFrame{
                     txtTotalComanda.setText("R$ 0,00");
                     jltPedidos.updateUI();
                  } 
+            }else if(e.getSource() == btnRelatorio){
+                float totalPedidos = 0;
+                for(int i=0; i < lstHistorico.size(); i++){
+                    totalPedidos = lstHistorico.get(i).getTotal();
+                }
+                JOptionPane.showMessageDialog(null, "Total Vendido até agora: R$ " + totalPedidos);
+                System.out.println(totalPedidos);
             }
         }
         

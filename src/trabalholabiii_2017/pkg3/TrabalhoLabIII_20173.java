@@ -28,7 +28,7 @@ public class TrabalhoLabIII_20173 {
     public static void main(String[] args) {
         
         try {
-            JanelaTrabalhoEditada janela = new JanelaTrabalhoEditada(leCardapio(), lePedido(), leMesas());
+            JanelaTrabalhoEditada janela = new JanelaTrabalhoEditada(leHistorico(), leCardapio(), lePedido(), leMesas());
             janela.setSize(600, 650);
             janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             janela.setLocationRelativeTo(null);
@@ -45,7 +45,7 @@ public class TrabalhoLabIII_20173 {
         
     }
     
-    public static ArrayList<Historico> leComanda() throws FileNotFoundException, IOException {
+    public static ArrayList<Historico> leHistorico() throws FileNotFoundException, IOException {
         ArrayList<Historico> lstHistorico = new ArrayList<>();
         FileReader arq = new FileReader("historico.txt");
         BufferedReader lerArq = new BufferedReader(arq);
@@ -57,6 +57,7 @@ public class TrabalhoLabIII_20173 {
             Float total = Float.parseFloat(tag[1]);
             String data = tag[2];
             Historico history = new Historico(total, data);
+            lstHistorico.add(history);
             linha = lerArq.readLine(); 
         }
         return lstHistorico;
